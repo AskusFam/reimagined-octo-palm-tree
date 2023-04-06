@@ -1,5 +1,5 @@
 # Askus API
-
+![The backend diagram!](https://github.com/AskusFam/reimagined-octo-palm-tree/blob/main/img/Screenshot%202023-04-05%20at%206.47.50%20PM.png "backen diagram")
 ## Set Up Locally
 The following steps will show how to setup locally
 
