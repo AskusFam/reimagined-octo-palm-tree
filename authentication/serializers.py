@@ -12,6 +12,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
     password2 = serializers.CharField(write_only=True, required=False)
+    is_staff = serializers.BooleanField(write_only=True, required=False, default=False)
 
     class Meta:
         model = User
@@ -31,7 +32,6 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         if 'password2' in validated_data:
-            print('passwrod2 was seen and handeled')
             del validated_data['password2']
         user = User.objects.create(**validated_data)
 
