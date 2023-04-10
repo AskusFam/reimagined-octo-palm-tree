@@ -8,6 +8,7 @@ from .permissions import isCreatorOrSafeMethod
 from rest_framework.response import Response
 from azure.storage.blob import BlobServiceClient
 import uuid
+import os
 # Create your views here.
 from environs import Env
 
@@ -56,3 +57,17 @@ class PhotoRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated, isCreatorOrSafeMethod]
     queryset = Photo.objects.all()
     
+    def delete(self, request, *args, **kwargs):
+        Photos = self.get_object()
+        path = Photos.path_to_store
+        directory = os.path.dirname(path) 
+        filename = os.path.basename(path)
+
+        # Get the BlobClient for the file you want to delete
+        blob_service_client = BlobServiceClient.from_connection_string(env.str('CONNECTION_STRING'))
+        container_client = blob_service_client.get_container_client(env.str('CONTAINER_NAME'))
+        blob_client = container_client.get_blob_client(filename)
+
+       
+        blob_client.delete_blob()
+        return self.destroy(request, *args, **kwargs)
