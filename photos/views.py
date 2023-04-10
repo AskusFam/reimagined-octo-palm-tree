@@ -16,13 +16,7 @@ class PhotosAPIView(ListCreateAPIView):
     parser_classes = [MultiPartParser]
 
     def post(self, request, *args, **kwargs):
-        '''
-        We will still call the super post function.
-        First we will make sure we send the image to the blob storage
-        Then call the create funtion
-        '''
         serializer = PhotoSerializer(data=request.data)
-        #print (request.data)
         if serializer.is_valid():
             serializer = create_photo(serializer)
             serializer.save(creator=self.request.user)
