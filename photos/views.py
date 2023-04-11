@@ -9,7 +9,7 @@ from rest_framework.response import Response
 from .utils import create_photo, delete_photo
 
 
-class PhotosAPIView(ListCreateAPIView):
+class PhotosListCreate(ListCreateAPIView):
     queryset = Photo.objects.all()
     permission_classes = [IsAuthenticated]
     serializer_class = PhotoSerializer
