@@ -12,5 +12,7 @@ class PhotoSerializer(serializers.ModelSerializer):  # create class to serialize
         read_only_fields = ['id', 'created_at', 'path_to_store']
     
     def create(self, validated_data):
-        if 'path_to_store' in validated_data and 'image' not in validated_data:
+        if 'image' in validated_data:
+            del validated_data['image']
+        if 'path_to_store' in validated_data:
             return Photo.objects.create(**validated_data)
