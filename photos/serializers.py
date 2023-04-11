@@ -1,8 +1,5 @@
 from rest_framework import serializers
-from django.contrib.auth.models import User
 from .models import Photo
-from rest_framework.validators import UniqueValidator
-from django.contrib.auth.password_validation import validate_password
 
 
 class PhotoSerializer(serializers.ModelSerializer):  # create class to serializer model
@@ -15,7 +12,5 @@ class PhotoSerializer(serializers.ModelSerializer):  # create class to serialize
         read_only_fields = ['id', 'created_at', 'path_to_store']
     
     def create(self, validated_data):
-        if 'path_to_store' in validated_data:
-            print ('good')
-        return Photo.objects.create(**validated_data)
-       
+        if 'path_to_store' in validated_data and 'image' not in validated_data:
+            return Photo.objects.create(**validated_data)
