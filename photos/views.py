@@ -18,11 +18,10 @@ class PhotosListCreate(ListCreateAPIView):
     def post(self, request, *args, **kwargs):
         serializer = PhotoSerializer(data=request.data)
         if serializer.is_valid():
-            serializer = create_photo(serializer)
+            path_to_store = create_photo(serializer.validated_data['image'])
+            serializer.validated_data['path_to_store'] = path_to_store
             serializer.save(creator=self.request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-        delete_photo(serializer.validated_data['path_to_store'])
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 

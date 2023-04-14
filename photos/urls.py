@@ -4,5 +4,5 @@ from .views import PhotosListCreate, PhotoRetrieveUpdateDestroy
 
 urlpatterns = [
     path('', PhotosListCreate.as_view(), name='photos_home'),
-    path('<int:pk>', PhotoRetrieveUpdateDestroy.as_view(), name='photo_id_view')
+    path('<int:pk>', PhotoRetrieveUpdateDestroy.as_view(), name='photo_id')
 ]
