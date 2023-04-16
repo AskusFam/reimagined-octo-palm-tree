@@ -7,20 +7,20 @@ env = Env()
 env.read_env()
 
 
-def create_photo(serializer):
+def create_photo(image):
     '''
     This function will create/upload a photo to the azure blob storage
     It creates a uuid for the for the name of the image which avoids issues related
     to having the same name. 
     Args:
-        serializer (serializer): This is a serializer object and holds 
+        image: This is a serializer object and holds 
         all of the data recieved from our API.
 
     Returns:
-        Serializer: Returns the serialzier objec with the validated data altered.
+        pathtostore: Returns the url of the object uploaded.
     '''
-    valid_data = serializer.validated_data  # get unsaved instance of the model
-    image = valid_data['image']
+   
+    
     image_name = str(uuid.uuid4())
 
     blob_service_client = BlobServiceClient.from_connection_string(
@@ -29,9 +29,8 @@ def create_photo(serializer):
         env.str('CONTAINER_NAME'))
     blob_client = container_client.get_blob_client(image_name)
     blob_client.upload_blob(image)
-    serializer.validated_data['path_to_store'] = blob_client.url
-
-    return serializer
+    
+    return blob_client.url
 
 
 def delete_photo(path):
