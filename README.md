@@ -64,13 +64,10 @@ sequenceDiagram
     participant S as Django API
     participant A as Azure Blob Storage
 
-    F->>S: GET /photos/upload-sas/?filename=foo.jpg
-    S-->>F: { upload_url: "https://...foo.jpg?{SAS}" }
-
-    F->>A: PUT file bytes to upload_url
-    A-->>F: 201 Created (blob stored)
-
-    F->>S: POST /photos/ { image_url: "...foo.jpg", metadata }
+    F->>S: POST /photos/ (multipart/form-data with file)
+    S->>A: storage.save(file)
+    A-->>S: blob saved, returns blob URL/name
     S->>S: save Photo metadata (image URL, creator, etc.)
     S-->>F: 201 Created (Photo data JSON)
+
 ```
